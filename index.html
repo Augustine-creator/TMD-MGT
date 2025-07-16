@@ -214,10 +214,30 @@
         }
 
         .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            display: flex;
             gap: 30px;
             margin-bottom: 30px;
+            overflow-x: auto;
+            padding: 10px 0;
+            scroll-behavior: smooth;
+        }
+
+        .charts-grid::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .charts-grid::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .charts-grid::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 10px;
+        }
+
+        .charts-grid::-webkit-scrollbar-thumb:hover {
+            background: #FFA500;
         }
 
         .chart-container {
@@ -226,6 +246,8 @@
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
+            min-width: 500px;
+            flex-shrink: 0;
         }
 
         .chart-container:hover {
@@ -250,11 +272,31 @@
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        .data-table::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .data-table::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .data-table::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 10px;
+        }
+
+        .data-table::-webkit-scrollbar-thumb:hover {
+            background: #FFA500;
         }
 
         .data-table table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 600px;
         }
 
         .data-table th {
@@ -263,12 +305,14 @@
             padding: 15px;
             text-align: left;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .data-table td {
             padding: 12px 15px;
             border-bottom: 1px solid #eee;
             transition: background-color 0.2s ease;
+            white-space: nowrap;
         }
 
         .data-table tr:hover td {
@@ -347,21 +391,97 @@
 
         @media (max-width: 768px) {
             .charts-grid {
-                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .chart-container {
+                min-width: 350px;
+                padding: 20px;
             }
             
             .metrics-grid {
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
             }
             
             .nav-tab {
-                min-width: 150px;
-                padding: 15px 10px;
-                font-size: 0.9rem;
+                min-width: 120px;
+                padding: 15px 8px;
+                font-size: 0.85rem;
             }
             
             .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .slide-container {
+                padding: 20px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+            
+            .metric-card {
+                padding: 20px;
+            }
+            
+            .metric-value {
                 font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chart-container {
+                min-width: 300px;
+                padding: 15px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .nav-tab {
+                min-width: 100px;
+                padding: 12px 6px;
+                font-size: 0.8rem;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .slide-container {
+                padding: 15px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 6px;
+                font-size: 0.8rem;
+            }
+            
+            .chart-title {
+                font-size: 1.2rem;
+            }
+            
+            .slide-title {
+                font-size: 1.4rem;
             }
         }
 
@@ -1043,32 +1163,38 @@
 
         // Initialize charts based on active tab
         function initializeCharts(tabName) {
-            switch(tabName) {
-                case 'overview':
-                    createYearComparisonChart();
-                    createBranchOverviewChart();
-                    break;
-                case 'branch':
-                    createBranchTargetChart();
-                    createBranchRankingChart();
-                    populateBranchTable();
-                    break;
-                case 'model':
-                    createModelComparisonChart();
-                    createModelDistributionChart();
-                    populateModelTable();
-                    break;
-                case 'bank':
-                    createBankPartnerChart();
-                    createFinancingMixChart();
-                    populateBankTable();
-                    break;
-                case 'ceo':
-                    createCeoPerformanceChart();
-                    createCeoDistributionChart();
-                    populateCeoTable();
-                    break;
-            }
+            setTimeout(() => {
+                switch(tabName) {
+                    case 'overview':
+                        createYearComparisonChart();
+                        createBranchOverviewChart();
+                        break;
+                    case 'branch':
+                        createBranchTargetChart();
+                        createBranchRankingChart();
+                        populateBranchTable();
+                        break;
+                    case 'model':
+                        createModelComparisonChart();
+                        createModelDistributionChart();
+                        populateModelTable();
+                        break;
+                    case 'bank':
+                        createBankPartnerChart();
+                        createFinancingMixChart();
+                        populateBankTable();
+                        break;
+                    case 'ceo':
+                        createCeoPerformanceChart();
+                        createCeoDistributionChart();
+                        populateCeoTable();
+                        break;
+                }
+                
+                // Re-add scroll indicators and touch support after charts are created
+                addScrollIndicators();
+                addTouchSupport();
+            }, 200);
         }
 
         // Chart creation functions with accurate data
@@ -1619,6 +1745,8 @@
             setTimeout(() => {
                 createYearComparisonChart();
                 createBranchOverviewChart();
+                addScrollIndicators();
+                addTouchSupport();
             }, 500);
             
             // Add smooth scrolling
@@ -1642,10 +1770,8 @@
                     card.style.transform = 'translateY(0)';
                 }, index * 100);
             });
-        });
-
-        // Add interactivity to metric cards
-        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Add interactivity to metric cards
             const metricCards = document.querySelectorAll('.metric-card');
             metricCards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
@@ -1657,6 +1783,118 @@
                 });
             });
         });
+
+        // Add scroll indicators and touch support
+        function addScrollIndicators() {
+            const chartGrids = document.querySelectorAll('.charts-grid');
+            const dataTables = document.querySelectorAll('.data-table');
+            
+            // Add scroll indicators for chart grids
+            chartGrids.forEach(grid => {
+                const indicator = document.createElement('div');
+                indicator.className = 'scroll-indicator';
+                indicator.innerHTML = '← Scroll for more charts →';
+                indicator.style.cssText = `
+                    text-align: center;
+                    color: #666;
+                    font-size: 0.9rem;
+                    margin-bottom: 10px;
+                    font-style: italic;
+                `;
+                grid.parentNode.insertBefore(indicator, grid);
+                
+                // Hide indicator if all content is visible
+                if (grid.scrollWidth <= grid.clientWidth) {
+                    indicator.style.display = 'none';
+                }
+            });
+            
+            // Add scroll indicators for tables
+            dataTables.forEach(table => {
+                const indicator = document.createElement('div');
+                indicator.className = 'scroll-indicator';
+                indicator.innerHTML = '← Scroll horizontally to see all data →';
+                indicator.style.cssText = `
+                    text-align: center;
+                    color: #666;
+                    font-size: 0.9rem;
+                    margin-bottom: 10px;
+                    font-style: italic;
+                `;
+                table.parentNode.insertBefore(indicator, table);
+                
+                // Hide indicator if all content is visible
+                if (table.scrollWidth <= table.clientWidth) {
+                    indicator.style.display = 'none';
+                }
+            });
+        }
+
+        // Add touch/swipe support for mobile
+        function addTouchSupport() {
+            const scrollableElements = document.querySelectorAll('.charts-grid, .data-table');
+            
+            scrollableElements.forEach(element => {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+                
+                element.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    startX = e.pageX - element.offsetLeft;
+                    scrollLeft = element.scrollLeft;
+                    element.style.cursor = 'grabbing';
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    element.style.cursor = 'grab';
+                });
+                
+                element.addEventListener('mouseup', () => {
+                    isDown = false;
+                    element.style.cursor = 'grab';
+                });
+                
+                element.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - element.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    element.scrollLeft = scrollLeft - walk;
+                });
+                
+                // Touch events for mobile
+                element.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].pageX - element.offsetLeft;
+                    scrollLeft = element.scrollLeft;
+                }, { passive: true });
+                
+                element.addEventListener('touchmove', (e) => {
+                    if (!startX) return;
+                    const x = e.touches[0].pageX - element.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    element.scrollLeft = scrollLeft - walk;
+                }, { passive: true });
+            });
+        }
+
+        // Smooth scroll function for navigation
+        function smoothScrollToChart(direction) {
+            const chartGrid = document.querySelector('.charts-grid');
+            if (!chartGrid) return;
+            
+            const scrollAmount = 300;
+            const currentScroll = chartGrid.scrollLeft;
+            const targetScroll = direction === 'left' ? 
+                currentScroll - scrollAmount : 
+                currentScroll + scrollAmount;
+            
+            chartGrid.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+            });
+        }
 
         // Add responsive chart resizing
         window.addEventListener('resize', function() {
@@ -1799,11 +2037,77 @@
                 animation: pulse 0.6s ease-in-out;
             }
             
-            @media print {
-                .nav-tabs { display: none; }
-                .tab-content { display: block !important; }
-                body { background: white; }
-                .dashboard-container { box-shadow: none; }
+            .scroll-indicator {
+                animation: fadeInOut 3s ease-in-out infinite;
+            }
+            
+            @keyframes fadeInOut {
+                0%, 100% { opacity: 0.5; }
+                50% { opacity: 1; }
+            }
+            
+            .charts-grid {
+                cursor: grab;
+            }
+            
+            .charts-grid:active {
+                cursor: grabbing;
+            }
+            
+            .data-table {
+                cursor: grab;
+            }
+            
+            .data-table:active {
+                cursor: grabbing;
+            }
+            
+            /* Mobile-specific improvements */
+            @media (max-width: 768px) {
+                .charts-grid {
+                    -webkit-overflow-scrolling: touch;
+                    scroll-snap-type: x mandatory;
+                }
+                
+                .chart-container {
+                    scroll-snap-align: start;
+                }
+                
+                .data-table {
+                    -webkit-overflow-scrolling: touch;
+                }
+                
+                .nav-tabs {
+                    -webkit-overflow-scrolling: touch;
+                }
+                
+                /* Better touch targets */
+                .nav-tab {
+                    min-height: 48px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                
+                .metric-card {
+                    min-height: 120px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+            }
+            
+            /* Scrollbar styling for better mobile experience */
+            .charts-grid::-webkit-scrollbar,
+            .data-table::-webkit-scrollbar {
+                height: 6px;
+            }
+            
+            @media (max-width: 768px) {
+                .charts-grid::-webkit-scrollbar,
+                .data-table::-webkit-scrollbar {
+                    height: 4px;
+                }
             }
         `;
         document.head.appendChild(style);
